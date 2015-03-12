@@ -8,7 +8,7 @@ public class WordManager : MonoBehaviour {
 	public GameObject letterPrefab;
 	public GameObject wordPrefab;
 
-	private string[] words = {
+	private string[] tempWords = {
         "fucking",
   		"ugly",
 		"wahid",
@@ -16,8 +16,16 @@ public class WordManager : MonoBehaviour {
 		"richard",
 		"win"
 	};
+
+	private struct Word {
+		public string name;
+		public GameObject gameObject;
+		public int counter;
+	}
 	
-	List<GameObject> currentWords = new List<GameObject>();
+	List<Word> words = new List<Word>();
+
+	Word target;
 
 	private float nextSpawn = 0;
 	private float width;
@@ -46,15 +54,19 @@ public class WordManager : MonoBehaviour {
 		Vector2 position;
 		position.y = y;
 		position.x = Random.Range(minX, maxX);
-		string word = words[Random.Range(0, words.Length)];
+		string name = tempWords[Random.Range(0, tempWords.Length)];
 		GameObject container = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
-		foreach(char c in word){
+		foreach(char c in name){
 			GameObject letter = LoadLetter(c);
 			letter.transform.parent = container.transform;
 			letter.transform.localPosition = position;
 			position.x += width;
 		}
-		currentWords.Add(container);
+		Word word = new Word();
+		word.name = name;
+		word.counter = 0;
+		word.gameObject = container;
+		words.Add(word);
 	}
 	
 	private GameObject LoadLetter (char letter) {
@@ -63,6 +75,16 @@ public class WordManager : MonoBehaviour {
 		Sprite sprite = Resources.Load<Sprite>(name);
 		instance.GetComponent<SpriteRenderer>().sprite = sprite;
 		return instance;
+	}
+
+	public GameObject DestroyLetter (char letter) {
+		if (target.gameObject == null) { // target is null
+
+		} else {
+
+		}
+
+		return target.gameObject;
 	}
 
 }
