@@ -2,20 +2,18 @@
 using System.Collections;
 using UnityEditor;
 using System.Collections.Generic;
+using System.IO;
 
 public class WordManager : MonoBehaviour {
 
 	public GameObject letterPrefab;
 	public GameObject wordPrefab;
 
-	private string[] tempWords = {
-        "fucking",
-  		"ugly",
-		"wahid",
-		"loves",
-		"richard",
-		"win"
-	};
+	protected FileInfo dictionaryFile = null;
+	protected StreamReader reader = null;
+	protected string text = "";
+
+	//private string[] tempWords = {};
 
 	private struct Word {
 		public string name;
@@ -24,6 +22,7 @@ public class WordManager : MonoBehaviour {
 	}
 	
 	List<Word> words = new List<Word>();
+	List<string> tempWords = new List<string>();
 
 	Word target;
 
@@ -41,6 +40,14 @@ public class WordManager : MonoBehaviour {
 		y = camPos.y + camSize;
 		minX = camPos.x - camSize;
 		maxX = camPos.x + camSize + 1;
+
+		dictionaryFile = new FileInfo("Assets/Resources/Text/Dictionary.txt");
+		reader = dictionaryFile.OpenText();
+		do {
+			text = reader.ReadLine();
+			print (text);
+			tempWords.Add(text);
+		} while(text != null);
 	}
 	
 	private void Update () {
@@ -54,7 +61,7 @@ public class WordManager : MonoBehaviour {
 		Vector2 position;
 		position.y = y;
 		position.x = Random.Range(minX, maxX);
-		string name = tempWords[Random.Range(0, tempWords.Length)];
+		string name = tempWords[Random.Range(0, tempWords.Count)];
 		GameObject container = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
 		foreach(char c in name){
 			GameObject letter = LoadLetter(c);
