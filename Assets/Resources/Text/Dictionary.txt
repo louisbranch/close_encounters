@@ -1,5 +1,2 @@
 test
 hello
-int
-p
-hi
