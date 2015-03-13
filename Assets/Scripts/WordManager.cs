@@ -13,8 +13,6 @@ public class WordManager : MonoBehaviour {
 	protected StreamReader reader = null;
 	protected string text = "";
 
-	//private string[] tempWords = {};
-
 	private struct Word {
 		public string name;
 		public GameObject gameObject;
@@ -23,6 +21,7 @@ public class WordManager : MonoBehaviour {
 	
 	List<Word> words = new List<Word>();
 	List<string> tempWords = new List<string>();
+	// Dictionary<int, List<string>> definedWords = new Dictionary<int, List<string>>();
 
 	Word target;
 
@@ -47,6 +46,7 @@ public class WordManager : MonoBehaviour {
 			text = reader.ReadLine();
 			print (text);
 			tempWords.Add(text);
+			// definedWords.Add(text.Length, tempWords);
 		} while(text != null);
 	}
 	
@@ -63,11 +63,13 @@ public class WordManager : MonoBehaviour {
 		position.x = Random.Range(minX, maxX);
 		string name = tempWords[Random.Range(0, tempWords.Count)];
 		GameObject container = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
-		foreach(char c in name){
-			GameObject letter = LoadLetter(c);
-			letter.transform.parent = container.transform;
-			letter.transform.localPosition = position;
-			position.x += width;
+		if (name != null) {
+			foreach(char c in name){
+				GameObject letter = LoadLetter(c);
+				letter.transform.parent = container.transform;
+				letter.transform.localPosition = position;
+				position.x += width;
+			}
 		}
 		Word word = new Word();
 		word.name = name;
