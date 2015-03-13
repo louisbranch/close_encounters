@@ -13,9 +13,9 @@ public class PlayerInput : MonoBehaviour {
 
 	private void Update () {
 		foreach (char c in Input.inputString) {
-			if (LETTERS.Contains(c.ToString()));
-			Debug.Log (c);
+			if (LETTERS.Contains(c.ToString())) {
+				manager.DestroyLetter(c);
+			}
 		}
 	}
-
 }

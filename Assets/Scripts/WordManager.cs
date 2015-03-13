@@ -2,16 +2,15 @@
 using System.Collections;
 using UnityEditor;
 using System.Collections.Generic;
-using System.IO;
 
 public class WordManager : MonoBehaviour {
 
-	public GameObject letterPrefab;
-	public GameObject wordPrefab;
+	public string wordsFile;
+	[SerializeField] private int minWordLength;
+	[SerializeField] private int maxWordLength;
 
-	protected FileInfo dictionaryFile = null;
-	protected StreamReader reader = null;
-	protected string text = "";
+	[SerializeField] private GameObject letterPrefab;
+	[SerializeField] private GameObject wordPrefab;
 
 	private struct Word {
 		public string name;
@@ -20,12 +19,10 @@ public class WordManager : MonoBehaviour {
 	}
 	
 	List<Word> words = new List<Word>();
-	Dictionary<string, int> definedWords = new Dictionary<string, int>();
-	List<string> tempWords = new List<string>();
 
 	Word target;
 
-	private int value = 0;
+	private int currentWordLength;
 
 	private float nextSpawn = 0;
 	private float width;
@@ -34,6 +31,8 @@ public class WordManager : MonoBehaviour {
 	private float minX;
 	private float maxX;
 
+	private Dictionary<int, List<string>> wordsDB;
+
 	private void Awake () {
 		width = letterPrefab.GetComponent<Renderer>().bounds.size.x;
 		Vector3 camPos = Camera.main.transform.position;
@@ -41,28 +40,15 @@ public class WordManager : MonoBehaviour {
 		y = camPos.y + camSize;
 		minX = camPos.x - camSize;
 		maxX = camPos.x + camSize + 1;
-
-		dictionaryFile = new FileInfo("Assets/Resources/Text/Dictionary.txt");
-		reader = dictionaryFile.OpenText();
-		do {
-			text = reader.ReadLine();																	// Reads the line and stores at the string text
-			tempWords.Add(text);																		// Adds the text string to List array tempWords
-			if (text != null) {																			// Skips null in string
-				if(!definedWords.ContainsKey(text)) {													// If text is not already a Key
-					definedWords.Add(text, text.Length);												// Add the word text and set the value of it 
-					foreach(KeyValuePair<string, int> pair in definedWords) {							// For debug purpose
-						string entry = pair.Key + " = " + pair.Value;
-						Debug.Log(entry);																// Prints the word + the value of the word
-					}
-				}
-			}
-		} while(text != null);
+		wordsDB = new WordsReader().ReadFromFile(wordsFile);
+		currentWordLength = minWordLength;
 	}
 	
 	private void Update () {
 		if (Time.time > nextSpawn) {
 			CreateRandomWord();
 			nextSpawn = Time.time + Random.Range(1,3);
+			IncreaseDifficulty();
 		}
 	}
 
@@ -70,7 +56,8 @@ public class WordManager : MonoBehaviour {
 		Vector2 position;
 		position.y = y;
 		position.x = Random.Range(minX, maxX);
-		string name = tempWords[Random.Range(0, tempWords.Count)];
+		List<string> wordsList = wordsDB[currentWordLength];
+		string name = wordsList[Random.Range(0, wordsList.Count)];
 		GameObject container = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
 		if (name != null) {
 			foreach(char c in name){
@@ -103,5 +90,9 @@ public class WordManager : MonoBehaviour {
 		}
 
 		return target.gameObject;
+	}
+
+	private void IncreaseDifficulty () {
+		currentWordLength = Mathf.Clamp(currentWordLength + 1, minWordLength, maxWordLength);
 	}
 }
