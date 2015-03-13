@@ -20,10 +20,12 @@ public class WordManager : MonoBehaviour {
 	}
 	
 	List<Word> words = new List<Word>();
+	Dictionary<string, int> definedWords = new Dictionary<string, int>();
 	List<string> tempWords = new List<string>();
-	// Dictionary<int, List<string>> definedWords = new Dictionary<int, List<string>>();
 
 	Word target;
+
+	private int value = 0;
 
 	private float nextSpawn = 0;
 	private float width;
@@ -43,10 +45,19 @@ public class WordManager : MonoBehaviour {
 		dictionaryFile = new FileInfo("Assets/Resources/Text/Dictionary.txt");
 		reader = dictionaryFile.OpenText();
 		do {
-			text = reader.ReadLine();
-			print (text);
-			tempWords.Add(text);
-			// definedWords.Add(text.Length, tempWords);
+			text = reader.ReadLine();																	// Reads the line and stores at the string text
+			tempWords.Add(text);																		// Adds the text string to List array tempWords
+			if (text.Length != 0) {
+				foreach(string word in tempWords) {														// For each word in the List array tempWords
+					// FIXME For some reason, it does not go to the next text word after the 2nd word
+					// OR it reads the word twice, which you can't have more than 2 of the same keys.
+					definedWords.Add(text, value++);													// Add the word text and set the value of it 
+					foreach(KeyValuePair<string, int> pair in definedWords) {							// For debug purpose
+						string entry = pair.Key + " = " + pair.Value;
+						Debug.Log(entry);																// Prints the word + the value of the word
+					}
+				}
+			}
 		} while(text != null);
 	}
 	
@@ -95,5 +106,4 @@ public class WordManager : MonoBehaviour {
 
 		return target.gameObject;
 	}
-
 }
