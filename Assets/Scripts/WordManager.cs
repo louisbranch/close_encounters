@@ -34,7 +34,7 @@ public class WordManager : MonoBehaviour {
 	private float maxX;
 
 	private void Awake () {
-		width = letterPrefab.renderer.bounds.size.x;
+		width = letterPrefab.GetComponent<Renderer>().bounds.size.x;
 		Vector3 camPos = Camera.main.transform.position;
 		float camSize = Camera.main.orthographicSize;
 		y = camPos.y + camSize;
