@@ -4,17 +4,21 @@ using System.Collections;
 public class PlayerInput : MonoBehaviour {
 
 	const string LETTERS = "abcdefghijklmnopqrstuvwxyz";
+
+	AudioSource source;
 	
-	private WordManager manager;
+	[SerializeField] private WordManager manager;
 
 	private void Awake () {
-		manager = GetComponent<WordManager>();
+		source = GetComponent<AudioSource>();
 	}
 
 	private void Update () {
 		foreach (char c in Input.inputString) {
 			if (LETTERS.Contains(c.ToString())) {
-				manager.DestroyLetter(c);
+				if (manager.DestroyLetter(c)) {
+					source.Play();
+				}
 			}
 		}
 	}
