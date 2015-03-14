@@ -12,15 +12,18 @@ public class WordManager : MonoBehaviour {
 	[SerializeField] private GameObject letterPrefab;
 	[SerializeField] private GameObject wordPrefab;
 
+	private int nextIndex = 0;
+
 	private struct Word {
 		public string name;
 		public GameObject gameObject;
 		public int counter;
+		public int index;
 	}
 	
-	List<Word> words = new List<Word>();
+	private Word[] words = new Word[256];
 
-	Word target;
+	private Word target;
 
 	private int currentWordLength;
 
@@ -58,20 +61,16 @@ public class WordManager : MonoBehaviour {
 		position.x = Random.Range(minX, maxX);
 		List<string> wordsList = wordsDB[currentWordLength];
 		string name = wordsList[Random.Range(0, wordsList.Count)];
-		GameObject container = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
+		GameObject parent = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
 		if (name != null) {
 			foreach(char c in name){
 				GameObject letter = LoadLetter(c);
-				letter.transform.parent = container.transform;
+				letter.transform.parent = parent.transform;
 				letter.transform.localPosition = position;
 				position.x += width;
 			}
 		}
-		Word word = new Word();
-		word.name = name;
-		word.counter = 0;
-		word.gameObject = container;
-		words.Add(word);
+		AddWord(name, parent);
 	}
 	
 	private GameObject LoadLetter (char letter) {
@@ -82,10 +81,13 @@ public class WordManager : MonoBehaviour {
 		return instance;
 	}
 
-	public GameObject DestroyLetter (char letter) {
+	public bool DestroyLetter (char letter) {
+		bool match = false;
 		if (target.gameObject == null) { // target is null
-			foreach(Word word in words) {
+			for (int i = 0; i < nextIndex; i++) {
+				Word word = words[i];
 				if (LetterMatch(word, letter)) {
+					match = true;
 					target = word;
 					RemoveNextLetter(target);
 					target.counter++;
@@ -94,17 +96,39 @@ public class WordManager : MonoBehaviour {
 			}
 		} else {
 			if (LetterMatch(target, letter)) {
+				match = true;
 				RemoveNextLetter(target);
 				target.counter++;
 				if (target.counter >= target.name.Length) {
-					Destroy(target.gameObject);
-					words.Remove(target); //FIXME it is not removing the word from the list
-					target.gameObject = null;
+					RemoveWord(target);
 				}
 			}
 		}
 
-		return target.gameObject;
+		return match;
+	}
+
+	private void AddWord(string name, GameObject parent) {
+		Word word = new Word();
+		word.name = name;
+		word.counter = 0;
+		word.gameObject = parent;
+		word.index = nextIndex;
+		words[nextIndex] = word;
+		nextIndex++;
+	}
+
+	private void RemoveWord(Word word) {
+		int lastIndex = nextIndex - 1;
+		if (lastIndex >= 0) {
+			int currentIndex = word.index;
+			Word last = words[lastIndex];
+			last.index = currentIndex;
+			words[currentIndex] = last;
+			Destroy(target.gameObject);
+			word.gameObject = null;
+			nextIndex--;
+		}
 	}
 
 	private bool LetterMatch(Word word, char letter) {
