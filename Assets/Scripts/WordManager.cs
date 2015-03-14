@@ -84,12 +84,35 @@ public class WordManager : MonoBehaviour {
 
 	public GameObject DestroyLetter (char letter) {
 		if (target.gameObject == null) { // target is null
-
+			foreach(Word word in words) {
+				if (LetterMatch(word, letter)) {
+					target = word;
+					RemoveNextLetter(target);
+					target.counter++;
+					break;
+				}
+			}
 		} else {
-
+			if (LetterMatch(target, letter)) {
+				RemoveNextLetter(target);
+				target.counter++;
+				if (target.counter >= target.name.Length) {
+					Destroy(target.gameObject);
+					words.Remove(target); //FIXME it is not removing the word from the list
+					target.gameObject = null;
+				}
+			}
 		}
 
 		return target.gameObject;
+	}
+
+	private bool LetterMatch(Word word, char letter) {
+		return word.name[word.counter] == letter;
+	}
+
+	private void RemoveNextLetter (Word word) {
+		Destroy(word.gameObject.transform.GetChild(0).gameObject);
 	}
 
 	private void IncreaseDifficulty () {
