@@ -16,7 +16,7 @@ public class TESTRayCast : MonoBehaviour {
 	}
 	void Laser () {
 		Debug.DrawLine(startPoint.position, endPoint.position, Color.red);
-		if (Physics2D.Linecast(startPoint.position, endPoint.position, 1 << LayerMask.NameToLayer("Word"))) {
+		if (Physics2D.Linecast(startPoint.position, endPoint.position, 1 << LayerMask.NameToLayer("Player"))) {
 			wordHit = Physics2D.Linecast(startPoint.position, endPoint.position, 1 << LayerMask.NameToLayer("Word"));
 			wordInView = true; 
 		} else {
