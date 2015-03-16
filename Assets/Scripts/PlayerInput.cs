@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour {
 				GameObject target = manager.DestroyLetter(c);
 				if (target != null) {
 					source.Play();
+					PlayerData.Instance.Score++;
 				}
 			}
 		}

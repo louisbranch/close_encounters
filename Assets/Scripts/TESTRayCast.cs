@@ -23,8 +23,8 @@ public class TESTRayCast : MonoBehaviour {
 			wordInView = false;
 		}
 		
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			Destroy (wordHit.collider.gameObject);
-		}
+		//if (Input.GetKeyDown(KeyCode.Space)) {
+		//	Destroy (wordHit.collider.gameObject);
+		//}
 	}
 }
