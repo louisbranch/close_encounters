@@ -4,7 +4,7 @@ using System.Collections;
 public class FloatEffect : MonoBehaviour {
 
 	private float startY = 0.5f;
-	private float duration = 1f;
+	public float duration = 1f;
 	
 	void Start () {
 		startY = transform.position.y;
