@@ -1,7 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GravShift : MonoBehaviour {
+public class Checker : MonoBehaviour {
+
+
+	void OnTriggerEnter2D(Collider2D other){
+		if (other.tag == "Word"){
+		Destroy(other.gameObject);
+		PlayerData.Instance.Health--;
+		}
+	}
 		/*public float maxGravDist = 4.0f;
 		public float maxGravity = 35.0f;
 		
