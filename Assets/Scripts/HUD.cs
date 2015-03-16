@@ -50,7 +50,7 @@ public class HUD : MonoBehaviour
 		}
 	}
 	void DestroyMe () { //Creates explosion based on ships position
-		//Destroy (player);
+		Destroy (player);
 		GameObject explosionObject = Instantiate(this.explosionPrefab) as GameObject;
 		explosionObject.transform.position = player.transform.position;
 	}
