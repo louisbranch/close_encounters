@@ -6,6 +6,7 @@ public class HUD : MonoBehaviour
 {
 	public Text score = null;
 	public Text highScore = null;
+	public Text health = null;
 
 	// Unity Script Singleton:
 
@@ -27,8 +28,12 @@ public class HUD : MonoBehaviour
 	// Update score and high score text values each frame.
 	void Update ()
 	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		    Application.LoadLevel(0);
+
 		this.score.text = "Score: " + PlayerData.Instance.Score.ToString();
 		this.highScore.text = "HighScore: " + PlayerData.Instance.HighScore.ToString();
+		this.health.text = "Health: " + PlayerData.Instance.Health.ToString();
 	}
 
 	void OnLevelWasLoaded ()
@@ -36,6 +41,7 @@ public class HUD : MonoBehaviour
 		if (Application.loadedLevelName == "MainMenu")
 		{
 			PlayerData.Instance.Score = 0;
+			PlayerData.Instance.Health = 3; 
 			Destroy (this.gameObject);
 		}
 	}

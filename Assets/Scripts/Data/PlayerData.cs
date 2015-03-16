@@ -54,5 +54,18 @@ public class PlayerData
 			return this.highScore;
 		}
 	}
+	private int health = 3;
+	public int Health {
+		get {
+			return this.health;
+		}
+
+		set {
+			health = value;
+			if (health <= 0)
+				Application.LoadLevel(0);
+		}
+
+	}
 
 }
