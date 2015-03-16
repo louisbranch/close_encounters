@@ -2,6 +2,12 @@
 using System.Collections;
 
 public class Menu : MonoBehaviour {
+	public bool manualLoad = false;
+	
+	//void Update () {
+		//if (manualLoad)
+		//	Application.LoadLevel(0);
+	//}
 
 	public void StartGame () {
 		Application.LoadLevel("Level1");

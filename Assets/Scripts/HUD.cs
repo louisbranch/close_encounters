@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour 
-{
+{	public GameObject player;
 	public Text score = null;
 	public Text highScore = null;
 	public Text health = null;
+	public GameObject explosionPrefab;
 
 	// Unity Script Singleton:
 
@@ -34,6 +35,9 @@ public class HUD : MonoBehaviour
 		this.score.text = "Score: " + PlayerData.Instance.Score.ToString();
 		this.highScore.text = "HighScore: " + PlayerData.Instance.HighScore.ToString();
 		this.health.text = "Health: " + PlayerData.Instance.Health.ToString();
+
+		if (PlayerData.Instance.Health == 0)
+			DestroyMe();
 	}
 
 	void OnLevelWasLoaded ()
@@ -44,5 +48,10 @@ public class HUD : MonoBehaviour
 			PlayerData.Instance.Health = 3; 
 			Destroy (this.gameObject);
 		}
+	}
+	void DestroyMe () { //Creates explosion based on ships position
+		//Destroy (player);
+		GameObject explosionObject = Instantiate(this.explosionPrefab) as GameObject;
+		explosionObject.transform.position = player.transform.position;
 	}
 }

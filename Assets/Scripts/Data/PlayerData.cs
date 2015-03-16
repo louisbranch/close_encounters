@@ -62,8 +62,8 @@ public class PlayerData
 
 		set {
 			health = value;
-			if (health <= 0)
-				Application.LoadLevel(0);
+			//if (health <= 0)
+				//Application.LoadLevel(0);
 		}
 
 	}
