@@ -35,8 +35,7 @@ public class WordManager : MonoBehaviour {
 	private float maxX;
 
 	private Dictionary<int, List<string>> wordsDB;
-
-	private PlayerData data;
+	
 	private int kills = 0;
 
 	private void Awake () {
@@ -48,7 +47,6 @@ public class WordManager : MonoBehaviour {
 		maxX = camPos.x + camSize + 1;
 		wordsDB = new WordsReader().ReadFromFile(wordsFile);
 		currentWordLength = minWordLength;
-		data = PlayerData.Instance;
 	}
 	
 	private void Update () {
