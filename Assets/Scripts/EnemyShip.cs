@@ -2,9 +2,8 @@
 using System.Collections;
 
 public class EnemyShip : MonoBehaviour {
-	
-	public Transform start;
-	public Transform end;
+
+	private Vector2 targetPos;
 
 	public float speed = 1f;
 
@@ -12,16 +11,15 @@ public class EnemyShip : MonoBehaviour {
 	private float journeyLength;
 
 	private void Start() {
-		start = transform;
-		end = GameObject.Find("Player").transform;
+		targetPos = GameObject.Find("Player").transform.position;
 		startTime = Time.time;
-		journeyLength = Vector3.Distance(start.position, end.position);
+		journeyLength = Vector3.Distance(transform.position, targetPos);
 	}
 
 	private void Update() {
 		float distCovered = (Time.time - startTime) * speed;
 		float fracJourney = distCovered / journeyLength;
-		transform.position = Vector3.Lerp(start.position, end.position, fracJourney);
+		transform.position = Vector3.Lerp(transform.position, targetPos, fracJourney);
 	}
 
 }
