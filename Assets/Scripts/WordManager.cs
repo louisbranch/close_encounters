@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+#if UNITY_STANDALONE
+#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE_WIN
+using UnityEngine;
 using System.Collections;
-// using UnityEditor;
+using UnityEditor;
 using System.Collections.Generic;
 
 public class WordManager : MonoBehaviour {
@@ -153,3 +157,7 @@ public class WordManager : MonoBehaviour {
 		currentWordLength = Mathf.Clamp(currentWordLength + 1, minWordLength, maxWordLength);
 	}
 }
+#endif
+#endif
+#endif
+#endif

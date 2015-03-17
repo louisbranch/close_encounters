@@ -1,3 +1,7 @@
+#if UNITY_EDITOR
+#if UNITY_STANDALONE
+#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE_WIN
 using UnityEngine;
 using System.Collections;
 
@@ -34,3 +38,7 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 }
+#endif
+#endif
+#endif
+#endif
