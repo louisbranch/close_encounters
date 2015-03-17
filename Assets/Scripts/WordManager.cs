@@ -56,18 +56,19 @@ public class WordManager : MonoBehaviour {
 	}
 
 	private void CreateRandomWord () {
-		Vector2 position;
-		position.y = y;
-		position.x = Random.Range(minX, maxX);
+		Vector2 parentPos;
+		Vector2 letterPos = Vector2.zero;
+		parentPos.y = y;
+		parentPos.x = Random.Range(minX, maxX);
 		List<string> wordsList = wordsDB[currentWordLength];
 		string name = wordsList[Random.Range(0, wordsList.Count)];
-		GameObject parent = (GameObject)Instantiate(wordPrefab, Vector3.zero, Quaternion.identity);
+		GameObject parent = (GameObject)Instantiate(wordPrefab, parentPos, Quaternion.identity);
 		if (name != null) {
 			foreach(char c in name){
 				GameObject letter = LoadLetter(c);
 				letter.transform.parent = parent.transform;
-				letter.transform.localPosition = position;
-				position.x += width;
+				letter.transform.localPosition = letterPos;
+				letterPos.x += width;
 			}
 		}
 		AddWord(name, parent);

@@ -17,8 +17,7 @@ public class PlayerInput : MonoBehaviour {
 				if (target != null) {
 					AudioSource.PlayClipAtPoint (laser, Vector3.zero);
 					PlayerData.Instance.Score++;
-				}
-				if (target == null) {
+				} else {
 					AudioSource.PlayClipAtPoint (error, Vector3.zero);
 				}
 			}

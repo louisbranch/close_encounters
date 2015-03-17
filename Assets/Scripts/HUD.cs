@@ -29,15 +29,19 @@ public class HUD : MonoBehaviour
 	// Update score and high score text values each frame.
 	void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		    Application.LoadLevel(0);
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.LoadLevel(0);
+		}
+		    
 
-		this.score.text = "Score: " + PlayerData.Instance.Score.ToString();
-		this.highScore.text = "HighScore: " + PlayerData.Instance.HighScore.ToString();
-		this.health.text = "Health: " + PlayerData.Instance.Health.ToString();
+		score.text = "Score: " + PlayerData.Instance.Score.ToString();
+		highScore.text = "HighScore: " + PlayerData.Instance.HighScore.ToString();
+		health.text = "Health: " + PlayerData.Instance.Health.ToString();
 
-		if (PlayerData.Instance.Health == 0)
+		if (PlayerData.Instance.Health == 0) {
 			DestroyMe();
+		}
+			
 	}
 
 	void OnLevelWasLoaded ()
@@ -50,8 +54,9 @@ public class HUD : MonoBehaviour
 		}
 	}
 	void DestroyMe () { //Creates explosion based on ships position
+		Vector2 pos = player.transform.position;
 		Destroy (player);
 		GameObject explosionObject = Instantiate(this.explosionPrefab) as GameObject;
-		explosionObject.transform.position = player.transform.position;
+		explosionObject.transform.position = pos;
 	}
 }
