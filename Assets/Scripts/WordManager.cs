@@ -36,6 +36,9 @@ public class WordManager : MonoBehaviour {
 
 	private Dictionary<int, List<string>> wordsDB;
 
+	private PlayerData data;
+	private int kills = 0;
+
 	private void Awake () {
 		width = letterPrefab.GetComponent<Renderer>().bounds.size.x;
 		Vector3 camPos = Camera.main.transform.position;
@@ -45,13 +48,13 @@ public class WordManager : MonoBehaviour {
 		maxX = camPos.x + camSize + 1;
 		wordsDB = new WordsReader().ReadFromFile(wordsFile);
 		currentWordLength = minWordLength;
+		data = PlayerData.Instance;
 	}
 	
 	private void Update () {
 		if (Time.time > nextSpawn) {
 			CreateRandomWord();
 			nextSpawn = Time.time + Random.Range(1,3);
-			IncreaseDifficulty();
 		}
 	}
 
@@ -103,6 +106,8 @@ public class WordManager : MonoBehaviour {
 				hit = true;
 				if (target.counter >= target.name.Length) {
 					RemoveWord(target);
+					kills++;
+					if (kills % 3 == 0) IncreaseDifficulty();
 				}
 			}
 		}
