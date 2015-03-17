@@ -54,7 +54,7 @@ public class WordManager : MonoBehaviour {
 	private void Update () {
 		if (Time.time > nextSpawn) {
 			CreateRandomWord();
-			nextSpawn = Time.time + Random.Range(1,3);
+			nextSpawn = Time.time + Random.Range(0.75, 1.5f);
 		}
 	}
 
