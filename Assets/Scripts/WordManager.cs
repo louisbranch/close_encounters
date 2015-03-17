@@ -105,13 +105,12 @@ public class WordManager : MonoBehaviour {
 				target.counter++;
 				hit = true;
 				if (target.counter >= target.name.Length) {
-					RemoveWord(target);
+					RemoveWord();
 					kills++;
 					if (kills % 3 == 0) IncreaseDifficulty();
 				}
 			}
 		}
-
 		return target.gameObject;
 	}
 
@@ -125,15 +124,15 @@ public class WordManager : MonoBehaviour {
 		nextIndex++;
 	}
 
-	private void RemoveWord(Word word) {
+	private void RemoveWord() {
 		int lastIndex = nextIndex - 1;
 		if (lastIndex >= 0) {
-			int currentIndex = word.index;
+			int currentIndex = target.index;
 			Word last = words[lastIndex];
 			last.index = currentIndex;
 			words[currentIndex] = last;
 			Destroy(target.gameObject);
-			word.gameObject = null;
+			target.gameObject = null;
 			nextIndex--;
 		}
 	}
