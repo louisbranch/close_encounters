@@ -146,7 +146,7 @@ public class WordManager : MonoBehaviour {
 	}
 
 	private void RemoveNextLetter (Word word) {
-		Destroy(word.gameObject.transform.GetChild(0).gameObject);
+		Destroy(word.gameObject.transform.GetChild(1).gameObject);
 	}
 
 	private void IncreaseDifficulty () {
