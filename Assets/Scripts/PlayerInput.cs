@@ -3,11 +3,14 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
 
-	public AudioClip laser;
-	public AudioClip error;
+	public AudioClip laserSound;
+	public AudioClip errorSound;
 
-	const string LETTERS = "abcdefghijklmnopqrstuvwxyz";
+	private Vector3 lastPos;
 	
+	const string LETTERS = "abcdefghijklmnopqrstuvwxyz";
+
+	[SerializeField] private GameObject projectile;
 	[SerializeField] private WordManager manager;
 
 	private void Update () {
@@ -16,10 +19,16 @@ public class PlayerInput : MonoBehaviour {
 				bool hit;
 				GameObject target = manager.DestroyLetter(c, out hit);
 				if (hit) {
-					AudioSource.PlayClipAtPoint (laser, Vector3.zero);
+					if (target != null) {
+						lastPos = target.transform.position;
+					}
+					GameObject laser = (GameObject) Instantiate(projectile, transform.position, Quaternion.identity);
+					laser.transform.LookAt(transform.position + Vector3.forward, lastPos);
+					laser.GetComponent<Projectile>().target = lastPos;
+					AudioSource.PlayClipAtPoint (laserSound, Vector3.zero);
 					PlayerData.Instance.Score++;
 				} else {
-					AudioSource.PlayClipAtPoint (error, Vector3.zero);
+					AudioSource.PlayClipAtPoint (errorSound, Vector3.zero);
 				}
 			}
 		}
