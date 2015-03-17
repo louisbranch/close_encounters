@@ -89,6 +89,7 @@ public class WordManager : MonoBehaviour {
 				Word word = words[i];
 				if (LetterMatch(word, letter)) {
 					target = word;
+					LockTarget();
 					RemoveNextLetter(target);
 					target.counter++;
 					hit = true;
@@ -129,6 +130,12 @@ public class WordManager : MonoBehaviour {
 			Destroy(target.gameObject);
 			word.gameObject = null;
 			nextIndex--;
+		}
+	}
+
+	private void LockTarget () {
+		foreach(SpriteRenderer rendered in target.gameObject.GetComponentsInChildren<SpriteRenderer>()) {
+			rendered.color = Color.red;
 		}
 	}
 
