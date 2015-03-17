@@ -19,13 +19,13 @@ const
 float
 union
 while
-return 
-signed 
-sizeof 
-static 
+return
+signed
+sizeof
+static
 struct
 public
-switch 
+switch
 double
 extern
 extend
@@ -37,7 +37,7 @@ default
 typedef
 private
 register
-unsigned 
+unsigned
 volatile
 continue
 protected
