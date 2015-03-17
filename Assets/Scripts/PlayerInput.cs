@@ -13,8 +13,9 @@ public class PlayerInput : MonoBehaviour {
 	private void Update () {
 		foreach (char c in Input.inputString) {
 			if (LETTERS.Contains(c.ToString())) {
-				GameObject target = manager.DestroyLetter(c);
-				if (target != null) {
+				bool hit;
+				GameObject target = manager.DestroyLetter(c, out hit);
+				if (hit) {
 					AudioSource.PlayClipAtPoint (laser, Vector3.zero);
 					PlayerData.Instance.Score++;
 				} else {

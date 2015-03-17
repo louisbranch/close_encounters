@@ -82,7 +82,8 @@ public class WordManager : MonoBehaviour {
 		return instance;
 	}
 
-	public GameObject DestroyLetter (char letter) {
+	public GameObject DestroyLetter (char letter, out bool hit) {
+		hit = false;
 		if (target.gameObject == null) { // target is null
 			for (int i = 0; i < nextIndex; i++) {
 				Word word = words[i];
@@ -90,6 +91,7 @@ public class WordManager : MonoBehaviour {
 					target = word;
 					RemoveNextLetter(target);
 					target.counter++;
+					hit = true;
 					break;
 				}
 			}
@@ -97,6 +99,7 @@ public class WordManager : MonoBehaviour {
 			if (LetterMatch(target, letter)) {
 				RemoveNextLetter(target);
 				target.counter++;
+				hit = true;
 				if (target.counter >= target.name.Length) {
 					RemoveWord(target);
 				}
