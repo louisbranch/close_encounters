@@ -4,7 +4,6 @@
 #if UNITY_STANDALONE_WIN
 using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using System.Collections.Generic;
 
 public class WordManager : MonoBehaviour {
@@ -16,16 +15,13 @@ public class WordManager : MonoBehaviour {
 	[SerializeField] private GameObject letterPrefab;
 	[SerializeField] private GameObject wordPrefab;
 
-	private int nextIndex = 0;
-
 	private struct Word {
 		public string name;
 		public GameObject gameObject;
 		public int counter;
-		public int index;
 	}
 	
-	private Word[] words = new Word[256];
+	private List<Word> words = new List<Word>();
 
 	private Word target;
 
@@ -90,8 +86,7 @@ public class WordManager : MonoBehaviour {
 	public GameObject DestroyLetter (char letter, out bool hit) {
 		hit = false;
 		if (target.gameObject == null) { // target is null
-			for (int i = 0; i < nextIndex; i++) {
-				Word word = words[i];
+			foreach (Word word in words) {
 				if (LetterMatch(word, letter)) {
 					target = word;
 					LockTarget();
@@ -121,22 +116,14 @@ public class WordManager : MonoBehaviour {
 		word.name = name;
 		word.counter = 0;
 		word.gameObject = parent;
-		word.index = nextIndex;
-		words[nextIndex] = word;
-		nextIndex++;
+		words.Add(word);
 	}
 
 	private void RemoveWord() {
-		int lastIndex = nextIndex - 1;
-		if (lastIndex >= 0) {
-			int currentIndex = target.index;
-			Word last = words[lastIndex];
-			last.index = currentIndex;
-			words[currentIndex] = last;
-			Destroy(target.gameObject);
-			target.gameObject = null;
-			nextIndex--;
-		}
+		int index = words.FindIndex(w => w.gameObject.Equals(target.gameObject));
+		words.RemoveAt(index);
+		Destroy(target.gameObject);
+		target.gameObject = null;
 	}
 
 	private void LockTarget () {
