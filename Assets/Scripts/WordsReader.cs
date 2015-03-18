@@ -8,12 +8,11 @@ public class WordsReader {
 	private Dictionary<int, List<string>> words = new Dictionary<int,List<string>>();
 
 	public Dictionary<int, List<string>>  ReadFromFile (string name) {
-		FileInfo file;
-		StreamReader reader;
+		StringReader reader;
 		string word;
 
-		file = new FileInfo("Assets/Resources/Text/" + name);
-		reader = file.OpenText();
+		TextAsset file = Resources.Load<TextAsset>("Text/" + name);
+		reader = new StringReader(file.text);
 		do {
 			word = reader.ReadLine();										// Reads the line and stores at the string text
 			if (word != null) {												// Skips null in string
